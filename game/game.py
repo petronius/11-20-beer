@@ -46,6 +46,7 @@ class Game(object):
 
         pyglet.clock.schedule_interval(self.update, self.framerate)
 
+        self.walls = []
 
     def on_key_press(self, symbols, modifiers):
         if self.label_visible:
@@ -93,3 +94,19 @@ class Game(object):
         
     def execute(self):
         pyglet.app.run()
+
+
+    def get_all_frozen(self):
+        for e in self.entities:
+            if isinstance(e, Enemy) and e.frozen:
+                yield e
+
+    def make_wall(self, e1, e2):
+        self.batch.add(2, pyglet.gl.GL_LINES, self.foreground,
+            ("v2f", (e1.x, e1.y, e2.x, e2.y)),
+            ('c4B', (255, 255, 255, 255) * 2),
+        )
+        self.walls.append((
+            (e1.x, e1.y),
+            (e2.x, e2.y),
+        ))

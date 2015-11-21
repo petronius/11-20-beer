@@ -53,4 +53,7 @@ class Enemy(unit.Unit):
 
     def freeze(self, n):
         self.frozen=n
-        
+
+        for e in self.game.get_all_frozen():
+            if e is not self:
+                self.game.make_wall(self, e)
